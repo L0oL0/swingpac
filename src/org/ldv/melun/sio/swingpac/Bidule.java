@@ -141,6 +141,10 @@ public class Bidule extends JPanel {
   public void stop() {
     this.timer.stop();
   }
+  
+  public void restart() {
+	 this.timer.restart();
+  }
 
   public int getIncY() {
     return incY;

@@ -1,8 +1,12 @@
 package org.ldv.melun.sio.swingpac;
 
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -24,6 +28,10 @@ public class FenetreMain extends JFrame implements ActionListener {
   // c'est un moyen très pratique d'associer un écouteur d'événement
   // à un générateur d'événement.
   static final String ACTION_QUITTER = "Quitter";
+  
+  static final String ACTION_PAUSE = "Pause";
+  
+  static final String ACTION_RESTART = "Reprendre";
 
   static final String ACTION_GO = "Go";
 
@@ -84,7 +92,17 @@ public class FenetreMain extends JFrame implements ActionListener {
 
     // TODO : ajouter une commande Pause qui stoppe le timer de tous les objets
     // Bidule.
-
+    
+    JMenuItem mnItemPause = new JMenuItem(ACTION_PAUSE, KeyEvent.VK_P);
+    mnItemPause.getAccessibleContext().setAccessibleDescription("Pause");
+    menuFichier.add(mnItemPause);
+    mnItemPause.addActionListener(this);
+    
+    JMenuItem mnItemRestart = new JMenuItem(ACTION_RESTART, KeyEvent.VK_R);
+    mnItemRestart.getAccessibleContext().setAccessibleDescription("Reprendre");
+    menuFichier.add(mnItemRestart);
+    mnItemRestart.addActionListener(this);
+    
     // on ajoute la barre de menu à la fenêtre
     setJMenuBar(menuBar);
 
@@ -93,7 +111,9 @@ public class FenetreMain extends JFrame implements ActionListener {
 
     // TODO : définir une taille en fonction de la taille de l'écran
     // par exemple le 1/4 de l'écran pour des grands écrans, ou 1/2 ...
-    setSize(500, 500);
+    Toolkit sc = Toolkit.getDefaultToolkit();
+    Dimension d = sc.getScreenSize();
+    setSize(d.width/2, d.height/2);
 
   }
 
@@ -138,6 +158,38 @@ public class FenetreMain extends JFrame implements ActionListener {
       System.exit(0);
     } else if (action.equals(ACTION_GO)) {
       go();
+    } else if (action.equals(ACTION_PAUSE)) {
+    	//créer une liste vide de bidules
+    	List<Bidule> bidules = new ArrayList<Bidule>();
+    	
+    	//sélectionne tous les objets (bidules) de la fenetre
+    	for (Component obj : this.getContentPane().getComponents()) {
+    		//vérifie que l'objet est un bidule
+    		if (obj instanceof Bidule && obj != this)
+    			//si oui il ajoute un bidule à la liste de bidules
+    			bidules.add((Bidule) obj);
+    	}
+    	//parcours la liste de bidules
+    	for (Bidule bidule : bidules) {
+    		//stop à tous les bidules
+    		bidule.stop();
+    	}
+    } else if (action.equals(ACTION_RESTART)) {
+    	//créer une liste vide de bidules
+    	List<Bidule> bidules = new ArrayList<Bidule>();
+    	
+    	//sélectionne tous les objets (bidules) de la fenetre
+    	for (Component obj : this.getContentPane().getComponents()) {
+    		//vérifie que l'objet est un bidule
+    		if (obj instanceof Bidule && obj != this)
+    			//si oui il ajoute un bidule à la liste de bidules
+    			bidules.add((Bidule) obj);
+    	}
+    	//parcours la liste de bidules
+    	for (Bidule bidule : bidules) {
+    		//stop à tous les bidules
+    		bidule.restart();
+    	}
     }
   }
 
