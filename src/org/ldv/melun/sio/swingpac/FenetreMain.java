@@ -111,6 +111,7 @@ public class FenetreMain extends JFrame implements ActionListener {
 
     // TODO : définir une taille en fonction de la taille de l'écran
     // par exemple le 1/4 de l'écran pour des grands écrans, ou 1/2 ...
+    //récupère la taille de l'écran
     Toolkit sc = Toolkit.getDefaultToolkit();
     Dimension d = sc.getScreenSize();
     setSize(d.width/2, d.height/2);
@@ -187,7 +188,7 @@ public class FenetreMain extends JFrame implements ActionListener {
     	}
     	//parcours la liste de bidules
     	for (Bidule bidule : bidules) {
-    		//stop à tous les bidules
+    		//reprendre
     		bidule.restart();
     	}
     }

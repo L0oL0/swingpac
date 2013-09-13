@@ -45,8 +45,29 @@ public class Bidule extends JPanel {
    * nom de l'instance (TODO : pourrait être pris par défaut via getClass().getName()...)
    */
   private String name;
+  
+  public String getName() {
+	return name;
+}
 
-  /**
+public void setName(String name) {
+	this.name = name;
+}
+
+
+
+public void augTaille() {
+	  // TODO (plus difficile) : augmenter la taille de biduleImpacteur (dans la
+	  // limite de la taille initiale)
+	  // si celui-ci a touché au moins 5 autres bidules	   
+	if (this.nbImpact>=5) {
+		 if (this.getWidth() < 100 && this.getHeight() < 100) {
+			 this.setBounds(getX() + incX, getY() + incY, getWidth() + 1, getHeight() + 1);
+		 }
+	}
+}
+
+/**
    * utilisé pour déterminer une valeur 'aléatoire' du DELAI ayant un impact sur
    * le déplacement
    */
@@ -70,12 +91,16 @@ public class Bidule extends JPanel {
    */
   final int NB_MINMAL_PIXELS_VIE = 3;
 
+private int nbImpact;
+
   /**
    * Déclaration du Template/Hook
    * 
    * @author kpu
    * 
    */
+  
+  
   public class MoveAction implements ActionListener {
 
     @Override
@@ -176,18 +201,28 @@ public class Bidule extends JPanel {
     // ai-je touché d'autres bidules ?
     List<Bidule> bidules = getCollisions();
     for (Bidule bidule : bidules) {
-      if (bidule.isGoDown()
-          && bidule.getY() + bidule.getHeight() >= this.getY())
-        bidule.tuEstouchePar(this);
-      else if (bidule.isGoUp()
-          && bidule.getY() <= this.getY() + this.getHeight())
-        bidule.tuEstouchePar(this);
-      else if (bidule.isGoRight()
-          && bidule.getX() + bidule.getWidth() >= this.getX())
-        bidule.tuEstouchePar(this);
-      else if (bidule.isGoLeft()
-          && bidule.getX() <= this.getWidth() + this.getX())
-        bidule.tuEstouchePar(this);
+      if (bidule.isGoDown() 
+    	  && bidule.getY() + bidule.getHeight() >= this.getY()) {
+          bidule.tuEstouchePar(this);
+    	  // TODO mémoriser le nombre d'impacts d'objet bidules réalisés (pas subis)
+    	  this.nbImpact++;    
+    	  this.augTaille();
+      } else if (bidule.isGoUp() 
+    	  && bidule.getY() <= this.getY() + this.getHeight()) {
+          bidule.tuEstouchePar(this);
+    	  this.nbImpact++;
+    	  this.augTaille();
+      } else if (bidule.isGoRight() 
+    	  && bidule.getX() + bidule.getWidth() >= this.getX()) {
+          bidule.tuEstouchePar(this);
+    	  this.nbImpact++;
+    	  this.augTaille();
+      } else if (bidule.isGoLeft() 
+    	  && bidule.getX() <= this.getWidth() + this.getX()) {
+          bidule.tuEstouchePar(this);
+    	  this.nbImpact++;
+    	  this.augTaille();
+      }    
     }
   }
 
@@ -199,7 +234,7 @@ public class Bidule extends JPanel {
     // le vainqueur est celui qui reste seul
     if (aloneInTheWorld()) {
       timer.stop();
-      JOptionPane.showMessageDialog(getParent(), "GAGNÉ : " + name);
+      JOptionPane.showMessageDialog(getParent(), "GAGNÉ : " + name + "\nnombre d'impacts : " + this.nbImpact);
       getParent().remove(this);
     }
   }
@@ -227,10 +262,14 @@ public class Bidule extends JPanel {
     // je retrécis
     this.setBounds(getX() + incX, getY() + incY, getWidth() - 1,
         getHeight() - 1);
-
+    
+ 
+    
     // TODO (plus difficile) : augmenter la taille de biduleImpacteur (dans la
     // limite de la taille initiale)
     // si celui-ci a touché au moins 5 autres bidules
+    
+    
 
     // en dessous d'une dimension minimale, l'objet
     // courant disparait de ce monde...
