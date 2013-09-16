@@ -23,13 +23,7 @@ public class Laureen extends Bidule {
     //setBackground(Color.cyan); 
     
   }
-  
-  public void paintComponent(Graphics g){
-	  image = getToolkit().getImage("images/image.png");
-	  g.drawImage(image,  0, 0, 100, 100, this);
-  }
-
- 
+   
   public void doMove() {
 	    // obtenir les coordonnées de la scene
 	    Rectangle rect = getParent().getBounds();
@@ -54,6 +48,23 @@ public class Laureen extends Bidule {
     setLocation(getX() + incX, getY() + incY);
       goOnLeft();
 
+  }
+  
+  public void paintComponent(Graphics g){
+	  if (isGoLeft()) {
+		  image = getToolkit().getImage("images/smiley.png");
+		  g.drawImage(image,  0, 0, 100, 100, this);
+	  } else if (isGoRight()) {
+		  image = getToolkit().getImage("images/smiley2.png");
+		  g.drawImage(image,  0, 0, 100, 100, this);
+	  } else if (isGoDown()) {
+		  image = getToolkit().getImage("images/smiley3.png");
+		  g.drawImage(image,  0, 0, 100, 100, this);
+	  } else {
+		  image = getToolkit().getImage("images/smiley4.png");
+		  g.drawImage(image,  0, 0, 100, 100, this);
+	  }
+	
   }
   
 

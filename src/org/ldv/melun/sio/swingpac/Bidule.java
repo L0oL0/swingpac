@@ -388,6 +388,7 @@ private int nbImpact;
 
   /**
    * oriente le déplacement vers la gauche
+ * @return 
    */
   public void goOnLeft() {
     if (incX > 0)
